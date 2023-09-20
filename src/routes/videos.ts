@@ -1,23 +1,19 @@
-import {Response, Request, Router} from "express";
+import { Response, Request, Router } from "express";
 import {videosService} from "../services";
 
 export const videosRouter = Router({});
 
 videosRouter.get('/', (req: Request, res: Response) => {
     const videos = videosService.getAllVideos();
-
-    if (!videos?.length) {
-        return res.status(404);
-    }
-
+    res.status(200);
     res.send(videos);
 });
 
 
 videosRouter.get('/:id', (req: Request, res: Response) => {
-    const {id} = req.params;
+    const { id} = req.params;
 
-    const video = videosService.getVideosById({videoId: id})
+    const video = videosService.getVideosById({ videoId: Number(id) })
 
     if (!video) {
         return res.status(404);
@@ -29,7 +25,7 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
 
 
 videosRouter.post('/', (req: Request, res: Response) => {
-    const {title, author, availableResolutions} = req.body;
+    const { title, author, availableResolutions } = req.body || {};
 
     if (!title || !author || !availableResolutions?.length) {
         res.status(400);
@@ -58,11 +54,11 @@ videosRouter.post('/', (req: Request, res: Response) => {
 videosRouter.put('/:id', (req: Request, res: Response) => {
     const { id: videoId} = req.params;
 
-    const {title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate} = req.body;
+    const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
 
     if (!title || !author || !availableResolutions?.length) {
         res.status(400);
-        res.send({
+        return res.send({
             errorsMessages: [
                 {
                     message: "error validation",
@@ -88,6 +84,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     if(!updatedVideo) return;
 
     res.status(204);
+    res.send()
 })
 
 
@@ -102,4 +99,5 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
     }
 
     res.status(204);
+    res.send()
 })

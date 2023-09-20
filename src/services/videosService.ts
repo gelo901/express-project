@@ -4,7 +4,7 @@ export const videosService = {
     getAllVideos: () => {
         return VideosModel.list;
     },
-    getVideosById: ({ videoId }: any) => {
+    getVideosById: ({ videoId }: { videoId: number }) => {
         if(!videoId) {
             return null;
         }
@@ -46,7 +46,7 @@ export const videosService = {
             ...params,
         }
 
-
+        VideosModel.list = VideosModel.list.filter((video) => video.id !== updatedVideo.id);
         VideosModel.list.push(updatedVideo);
 
         return updatedVideo;
