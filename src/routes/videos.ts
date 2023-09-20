@@ -41,14 +41,14 @@ videosRouter.post('/', (req: Request, res: Response) => {
     }
 
 
-    const createdVideo = videosService.postVideos({
+    videosService.postVideos({
         title,
         author,
         availableResolutions
     });
 
     res.status(201);
-    res.send(createdVideo);
+    res.send({})
 });
 
 
