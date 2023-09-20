@@ -16,7 +16,8 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
     const video = videosService.getVideosById({ videoId: Number(id) })
 
     if (!video) {
-        return res.status(404);
+        res.status(404);
+        res.send();
     }
 
     res.status(200);
