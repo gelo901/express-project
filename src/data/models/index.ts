@@ -1,1 +1,1 @@
-export * from './videosModel';
+export * from './videosModel'
