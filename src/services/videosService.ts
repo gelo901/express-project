@@ -29,7 +29,13 @@ export const videosService = {
     }
     return VideosModel.list.find((video: Video) => video.id === Number(videoId))
   },
-  postVideos: ({ title, author, availableResolutions }: PostVideoParams) => {
+  postVideos: ({
+    title,
+    author,
+    availableResolutions,
+    minAgeRestriction,
+    canBeDownloaded = false
+  }: PostVideoParams) => {
     let video = null
 
     if (VideosModel.list.length > 0) {
@@ -41,15 +47,19 @@ export const videosService = {
       })
     }
 
+    // TODO: remove this mock when we do connect to mongoDB
+    const currentDate = new Date()
+    currentDate.setDate(currentDate.getDate() + 2)
+
     const newVideo = {
       id: video ? video.id + 1 : 1,
       title,
       author,
       availableResolutions,
-      canBeDownloaded: true,
-      minAgeRestriction: null,
-      createdAt: new Date().toISOString(),
-      publicationDate: new Date().toISOString()
+      canBeDownloaded: Boolean(canBeDownloaded),
+      minAgeRestriction: minAgeRestriction || null,
+      createdAt: currentDate.toISOString(),
+      publicationDate: currentDate.toISOString()
     }
 
     VideosModel.list.push(newVideo)
@@ -85,5 +95,9 @@ export const videosService = {
     VideosModel.list = VideosModel.list.filter((video: Video) => video.id !== videoById.id)
 
     return 204
+  },
+
+  clearAll: () => {
+    VideosModel.list = []
   }
 }

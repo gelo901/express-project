@@ -11,10 +11,10 @@ const MOCKED_VIDEO: Video = {
   title: 'back-end',
   author: 'me',
   availableResolutions: ['P144'],
-  canBeDownloaded: true,
+  canBeDownloaded: false,
   minAgeRestriction: null,
-  createdAt: '2023-10-19T12:00:29.254Z',
-  publicationDate: '2023-10-19T12:00:29.254Z'
+  createdAt: '2023-10-20T12:00:29.254Z',
+  publicationDate: '2023-10-20T12:00:29.254Z'
 }
 
 describe('/videos', () => {
@@ -92,23 +92,15 @@ describe('/videos', () => {
 
       await request(app).get('/videos/1').expect(expectUpdatedVideo)
     })
-    it('should create video and return status 404', async () => {
+    it('should create video and return status 400', async () => {
       const result = await request(app)
         .put('/videos/1')
         .send({
           author: 'me',
           availableResolutions: ['P144']
         })
-        .expect({
-          errorsMessages: [
-            {
-              message: 'error validation',
-              field: 'One of the fields in this list is missing: title, author, availableResolutions'
-            }
-          ]
-        })
 
-      expect(result.status).toBe(404)
+      expect(result.status).toBe(400)
     })
   })
   describe('DELETE', () => {
@@ -119,6 +111,11 @@ describe('/videos', () => {
       expect(result.status).toBe(204)
       const getDeletedVideo = await request(app).get(`/videos/${lastVideo.id}`)
       expect(getDeletedVideo.status).toBe(404)
+    })
+
+    it('should delete all videos', async () => {
+      const response = await request(app).delete('/testing/all-data')
+      expect(response.status).toBe(204)
     })
   })
 })

@@ -1,5 +1,6 @@
 import { type Response, type Request, Router } from 'express'
 import { videosService } from '../services'
+import { checkValidateFields } from '../helpers/validate'
 
 export const videosRouter = Router({})
 
@@ -26,16 +27,11 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
 videosRouter.post('/', (req: Request, res: Response) => {
   const { title, author, availableResolutions } = req.body || {}
 
-  if (!title || !author || !availableResolutions?.length) {
+  const errorValidation = checkValidateFields(title, author, availableResolutions)
+
+  if (errorValidation) {
     res.status(400)
-    res.send({
-      errorsMessages: [
-        {
-          message: 'error validation',
-          field: 'string'
-        }
-      ]
-    })
+    res.send(errorValidation)
   }
 
   const createdVideo = videosService.postVideos({
@@ -53,16 +49,11 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
   const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body
 
-  if (!title || !author || !availableResolutions?.length) {
-    res.status(404)
-    return res.send({
-      errorsMessages: [
-        {
-          message: 'error validation',
-          field: 'One of the fields in this list is missing: title, author, availableResolutions'
-        }
-      ]
-    })
+  const errorValidation = checkValidateFields(title, author, availableResolutions)
+
+  if (errorValidation) {
+    res.status(400)
+    res.send(errorValidation)
   }
 
   const updatedVideo = videosService.updateVideoById({
@@ -77,7 +68,10 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     }
   })
 
-  if (!updatedVideo) return
+  if (!updatedVideo) {
+    res.status(404)
+    res.send()
+  }
 
   res.status(204)
   res.send()
@@ -90,6 +84,7 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
 
   if (!result) {
     res.status(404)
+    res.send()
   }
 
   res.status(204)
