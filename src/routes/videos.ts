@@ -27,7 +27,7 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
 videosRouter.post('/', (req: Request, res: Response) => {
   const { title, author, availableResolutions, canBeDownloaded } = req.body || {}
 
-  const validation = checkValidateFields(title, author, availableResolutions)
+  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded)
 
   if (validation.errorsMessages?.length) {
     res.status(400)
@@ -50,7 +50,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
   const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body
 
-  const validation = checkValidateFields(title, author, availableResolutions)
+  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded)
 
   if (validation.errorsMessages?.length) {
     res.status(400)
