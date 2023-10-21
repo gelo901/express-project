@@ -1,27 +1,30 @@
-const MAX_COUNT_TITLE = 15;
+const MAX_COUNT_TITLE = 15
 
 export const checkValidateFields = (title?: string, author?: string, availableResolutions?: string[]) => {
-  if (title && author && availableResolutions?.length) {
-    return null
-  }
-
-  const errorFields = []
+  const errorsMessages = []
 
   if (!title || title?.length > MAX_COUNT_TITLE) {
-    errorFields.push('title')
+    errorsMessages.push({
+      message: 'error validation',
+      field: 'title'
+    })
   }
+
   if (!author) {
-    errorFields.push('author')
+    errorsMessages.push({
+      message: 'error validation',
+      field: 'author'
+    })
   }
+
   if (!availableResolutions?.length) {
-    errorFields.push('availableResolutions')
+    errorsMessages.push({
+      message: 'error validation',
+      field: 'availableResolutions'
+    })
   }
+
   return {
-    errorsMessages: [
-      {
-        message: 'error validation',
-        field: errorFields.join(', ')
-      }
-    ]
+    errorsMessages
   }
 }

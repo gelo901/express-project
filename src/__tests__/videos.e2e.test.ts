@@ -43,7 +43,8 @@ describe('/videos', () => {
         .send({
           title: 'back-end',
           author: 'me',
-          availableResolutions: ['P144']
+          availableResolutions: ['P144'],
+          canBeDownloaded: false
         })
         .expect({ ...MOCKED_VIDEO, id: 2 })
       expect(result.status).toBe(201)
@@ -97,7 +98,8 @@ describe('/videos', () => {
         .put('/videos/1')
         .send({
           author: 'me',
-          availableResolutions: ['P144']
+          availableResolutions: ['P144'],
+          canBeDownloaded: false
         })
 
       expect(result.status).toBe(400)

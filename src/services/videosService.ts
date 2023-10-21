@@ -49,7 +49,7 @@ export const videosService = {
 
     // TODO: remove this mock when we do connect to mongoDB
     const currentDate = new Date()
-    currentDate.setDate(currentDate.getDate() + 2)
+    currentDate.setDate(currentDate.getDate() + 1)
 
     const newVideo = {
       id: video ? video.id + 1 : 1,
