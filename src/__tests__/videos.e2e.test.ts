@@ -4,8 +4,6 @@ import { app } from '../settings'
 import { Video } from '../data/models'
 dotenv.config()
 
-jest.useFakeTimers().setSystemTime(new Date('2023-10-19T12:00:29.254Z'))
-
 const MOCKED_VIDEO: Video = {
   id: 1,
   title: 'back-end',
@@ -13,11 +11,19 @@ const MOCKED_VIDEO: Video = {
   availableResolutions: ['P144'],
   canBeDownloaded: false,
   minAgeRestriction: null,
-  createdAt: '2023-10-20T12:00:29.254Z',
-  publicationDate: '2023-10-20T12:00:29.254Z'
+  createdAt: '2023-10-22T12:00:29.254Z',
+  publicationDate: '2023-10-23T12:00:29.254Z'
 }
 
 describe('/videos', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2023-10-22T12:00:29.254Z'))
+  })
+  afterEach(async () => {
+    jest.clearAllMocks()
+    await request(app).delete('/testing/all-data')
+  })
+
   describe('GET', () => {
     it('should return video empty array', async () => {
       await request(app).get('/videos').expect([])
@@ -46,7 +52,7 @@ describe('/videos', () => {
           availableResolutions: ['P144'],
           canBeDownloaded: false
         })
-        .expect({ ...MOCKED_VIDEO, id: 2 })
+        .expect({ ...MOCKED_VIDEO, id: 1 })
       expect(result.status).toBe(201)
     })
     it('should create video and return status 400', async () => {
@@ -107,11 +113,17 @@ describe('/videos', () => {
   })
   describe('DELETE', () => {
     it('should delete video', async () => {
-      const allVideos = await request(app).get('/videos')
-      const lastVideo = allVideos.body[allVideos.body.length - 1]
-      const result = await request(app).delete(`/videos/${lastVideo.id}`)
+      await request(app)
+        .post('/videos')
+        .send({
+          title: 'back-end',
+          author: 'me',
+          availableResolutions: ['P144'],
+          canBeDownloaded: false
+        })
+      const result = await request(app).delete(`/videos/1`)
       expect(result.status).toBe(204)
-      const getDeletedVideo = await request(app).get(`/videos/${lastVideo.id}`)
+      const getDeletedVideo = await request(app).get(`/videos/1`)
       expect(getDeletedVideo.status).toBe(404)
     })
 
