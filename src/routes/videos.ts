@@ -52,7 +52,14 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
   const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body
 
-  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded, minAgeRestriction)
+  const validation = checkValidateFields(
+    title,
+    author,
+    availableResolutions,
+    canBeDownloaded,
+    minAgeRestriction,
+    publicationDate
+  )
 
   if (validation.errorsMessages?.length) {
     res.status(400)

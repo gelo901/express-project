@@ -4,24 +4,29 @@ const isInvalidString = (inputString: string) => {
   const regex = /^[A-Z].*\d$/
   return regex.test(inputString)
 }
+function isValidDateFormat(inputString: string) {
+  const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/
+  return regex.test(inputString)
+}
 
 export const checkValidateFields = (
   title?: string,
   author?: string,
   availableResolutions?: string[],
   canBeDownloaded?: boolean | string,
-  minAgeRestriction: number = 18
+  minAgeRestriction?: number,
+  publicationDate?: string
 ) => {
   const errorsMessages = []
 
-  if (!title || title?.length > MAX_COUNT_TITLE) {
+  if (!title || title?.trim().length > MAX_COUNT_TITLE) {
     errorsMessages.push({
       message: 'error validation',
       field: 'title'
     })
   }
 
-  if (!author || author?.length > MAX_COUNT_TITLE) {
+  if (!author || author?.trim().length > MAX_COUNT_TITLE) {
     errorsMessages.push({
       message: 'error validation',
       field: 'author'
@@ -52,11 +57,17 @@ export const checkValidateFields = (
     })
   }
 
-  // This workaround is intended to bypass a test case that I don't understand.
-  if (minAgeRestriction > 24) {
+  if (minAgeRestriction && minAgeRestriction > 21) {
     errorsMessages.push({
       message: 'error validation',
       field: 'minAgeRestriction'
+    })
+  }
+
+  if (publicationDate && !isValidDateFormat(publicationDate)) {
+    errorsMessages.push({
+      message: 'error validation',
+      field: 'publicationDate'
     })
   }
 
