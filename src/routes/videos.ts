@@ -25,20 +25,22 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
 })
 
 videosRouter.post('/', (req: Request, res: Response) => {
-  const { title, author, availableResolutions, canBeDownloaded } = req.body || {}
+  const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction } = req.body || {}
 
-  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded)
+  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded, minAgeRestriction)
 
   if (validation.errorsMessages?.length) {
     res.status(400)
     res.send(validation)
+    return
   }
 
   const createdVideo = videosService.postVideos({
     title,
     author,
     availableResolutions,
-    canBeDownloaded
+    canBeDownloaded,
+    minAgeRestriction
   })
 
   res.status(201)
@@ -50,11 +52,12 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
   const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body
 
-  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded)
+  const validation = checkValidateFields(title, author, availableResolutions, canBeDownloaded, minAgeRestriction)
 
   if (validation.errorsMessages?.length) {
     res.status(400)
     res.send(validation)
+    return
   }
 
   const updatedVideo = videosService.updateVideoById({

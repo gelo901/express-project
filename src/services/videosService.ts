@@ -49,7 +49,7 @@ export const videosService = {
 
     // TODO: remove this mock when we do connect to mongoDB
     const currentDate = new Date()
-    currentDate.setDate(currentDate.getDate() + 1)
+    const publicationDate = new Date(currentDate.setDate(currentDate.getDate() + 1)).toISOString()
 
     const newVideo = {
       id: video ? video.id + 1 : 1,
@@ -59,7 +59,7 @@ export const videosService = {
       canBeDownloaded: Boolean(canBeDownloaded),
       minAgeRestriction: minAgeRestriction || null,
       createdAt: currentDate.toISOString(),
-      publicationDate: currentDate.toISOString()
+      publicationDate
     }
 
     VideosModel.list.push(newVideo)
