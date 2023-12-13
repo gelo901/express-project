@@ -53,7 +53,9 @@ export const checkValidateFieldsMiddleware = (req: Request, res: Response, next:
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
-    res.status(STATUS_CODES.BAD_REQUEST).json(errors.array())
+    const errorsArray = errors.array()
+    const errorsMessages = errorsArray.map((error) => error.msg)
+    res.status(STATUS_CODES.BAD_REQUEST).json({ errorsMessages })
     return
   }
 
