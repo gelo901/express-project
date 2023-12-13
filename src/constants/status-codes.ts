@@ -1,0 +1,15 @@
+type StatusCodes = {
+  OK: 200
+  CREATED: 201
+  NO_CONTENTS: 204
+  NOT_FOUND: 404
+  BAD_REQUEST: 400
+}
+
+export const STATUS_CODES: StatusCodes = {
+  OK: 200,
+  CREATED: 201,
+  NO_CONTENTS: 204,
+  NOT_FOUND: 404,
+  BAD_REQUEST: 400
+}
