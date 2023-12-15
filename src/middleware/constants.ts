@@ -1,0 +1,15 @@
+export const MIN_COUNT_TITLE = 2
+export const MAX_COUNT_TITLE = 20
+
+export const MIN_DESCRIPTION_COUNT = 10
+
+export const MAX_DESCRIPTION_COUNT = 100
+
+export const MIN_WEBSITE_URL_COUNT = 5
+
+export default {
+  MIN_COUNT_TITLE,
+  MAX_COUNT_TITLE,
+  MAX_DESCRIPTION_COUNT,
+  MIN_WEBSITE_URL_COUNT
+}

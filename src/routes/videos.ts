@@ -1,15 +1,15 @@
 import { type Response, type Request, Router } from 'express'
 import { videosService } from '../services'
 import {
-  checkValidateFieldsMiddleware,
   validateAuthor,
   validateAvailableResolutions,
   validateCanBeDownloaded,
   validateMinAgeRestriction,
   validatePublicationDate,
   validateTitle
-} from '../middleware/validate'
+} from '../middleware/validateVideoFields'
 import { STATUS_CODES } from '../constants/status-codes'
+import { checkValidateFieldsMiddleware } from '../middleware/check-validate-fields-middleware/checkValidateFieldsMiddleware'
 
 export const videosRouter = Router({})
 

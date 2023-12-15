@@ -4,6 +4,7 @@ type StatusCodes = {
   NO_CONTENTS: 204
   NOT_FOUND: 404
   BAD_REQUEST: 400
+  UNAUTHORIZED: 401
 }
 
 export const STATUS_CODES: StatusCodes = {
@@ -11,5 +12,6 @@ export const STATUS_CODES: StatusCodes = {
   CREATED: 201,
   NO_CONTENTS: 204,
   NOT_FOUND: 404,
-  BAD_REQUEST: 400
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401
 }

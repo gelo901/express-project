@@ -1,9 +1,5 @@
-import { body, validationResult } from 'express-validator'
-import { NextFunction, Request, Response } from 'express'
-import { STATUS_CODES } from '../constants/status-codes'
-
-const MIN_COUNT_TITLE = 2
-const MAX_COUNT_TITLE = 20
+import { body } from 'express-validator'
+import { MAX_COUNT_TITLE, MIN_COUNT_TITLE } from './constants'
 
 const isInvalidString = (inputString: string) => {
   const regex = /^[A-Z].*\d$/
@@ -74,16 +70,3 @@ export const validatePublicationDate = body('publicationDate')
     message: 'error validation',
     field: 'publicationDate'
   })
-
-export const checkValidateFieldsMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const errors = validationResult(req)
-
-  if (!errors.isEmpty()) {
-    const errorsArray = errors.array()
-    const errorsMessages = errorsArray.map((error) => error.msg)
-    res.status(STATUS_CODES.BAD_REQUEST).json({ errorsMessages })
-    return
-  }
-
-  next()
-}
