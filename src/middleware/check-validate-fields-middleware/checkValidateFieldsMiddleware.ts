@@ -7,7 +7,7 @@ export const checkValidateFieldsMiddleware = (req: Request, res: Response, next:
 
   if (!errors.isEmpty()) {
     const errorsArray = errors.array()
-    const errorsMessages = errorsArray.map((error) => error.msg)
+    const errorsMessages = errorsArray.map((error) => error.msg).filter((error) => error !== 'Invalid value')
     res.status(STATUS_CODES.BAD_REQUEST).json({ errorsMessages })
     return
   }

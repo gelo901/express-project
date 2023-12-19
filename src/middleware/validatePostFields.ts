@@ -1,8 +1,9 @@
 import { body } from 'express-validator'
-import constants, { MAX_CONTENT_COUNT } from './constants'
+import constants from './constants'
 import { blogsService } from '../services'
 
 export const validateTitle = body('title')
+  .trim()
   .notEmpty()
   .isLength({ min: constants.POSTS.MIN_COUNT_TITLE, max: constants.POSTS.MAX_COUNT_TITLE })
   .withMessage({
@@ -27,6 +28,7 @@ export const validateContent = body('content')
   })
 
 export const validateBlogId = body('blogId')
+  .trim()
   .notEmpty()
   .custom((blogId: string) => {
     const blog = blogsService.getBlogsById(blogId)
