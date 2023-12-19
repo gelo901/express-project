@@ -11,7 +11,7 @@ const MOCKED_BLOG: Blog = {
   websiteUrl: 'https://YQ3TaDNw5pJllLSUQFY0Ssj-2sxe2Q17CHNs1c_3XMDRnNBcAipPhHOBT1FZLPiUDLU9ee8RHlTubTcHEAW.0lO6w7e0'
 }
 
-const TEST_AUTH_TOKEN = 'YWRtaW46cXdlcnR5'
+const TEST_AUTH_TOKEN = 'YWRtaW5ccXdlcnR5'
 
 describe('/blogs', () => {
   afterEach(async () => {

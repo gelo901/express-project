@@ -9,13 +9,24 @@ export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunct
     return res.status(STATUS_CODES.UNAUTHORIZED).send(AUTH_ERROR)
   }
 
-  const encodedCredentials = authHeader.split(' ')[1]
-  const decodedCredentials = atob(encodedCredentials)
-  const [username, password] = decodedCredentials.split(':')
+  const tokenType = authHeader.split(' ')[0]
 
-  if (username === 'admin' && password === 'qwerty') {
-    next()
-  } else {
+  if (tokenType !== 'Basic') {
+    res.status(STATUS_CODES.UNAUTHORIZED).send(AUTH_ERROR)
+  }
+
+  const encodedCredentials = authHeader.split(' ')[1]
+
+  try {
+    const decodedCredentials = atob(encodedCredentials)
+    const [username, password] = decodedCredentials.split(/[\\/:\\s]+/)
+
+    if (username === 'admin' && password === 'qwerty') {
+      next()
+    } else {
+      res.status(STATUS_CODES.UNAUTHORIZED).send(AUTH_ERROR)
+    }
+  } catch (error) {
     res.status(STATUS_CODES.UNAUTHORIZED).send(AUTH_ERROR)
   }
 }

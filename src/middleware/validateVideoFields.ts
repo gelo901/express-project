@@ -1,5 +1,5 @@
 import { body } from 'express-validator'
-import { MAX_COUNT_TITLE, MIN_COUNT_TITLE } from './constants'
+import constants from './constants'
 
 const isInvalidString = (inputString: string) => {
   const regex = /^[A-Z].*\d$/
@@ -11,14 +11,17 @@ const isValidDateFormat = (inputString: string) => {
   return regex.test(inputString)
 }
 
-export const validateTitle = body('title').trim().isLength({ min: MIN_COUNT_TITLE, max: MAX_COUNT_TITLE }).withMessage({
-  message: 'error validation',
-  field: 'title'
-})
+export const validateTitle = body('title')
+  .trim()
+  .isLength({ min: constants.VIDEOS.MIN_COUNT_TITLE, max: constants.VIDEOS.MAX_COUNT_TITLE })
+  .withMessage({
+    message: 'error validation',
+    field: 'title'
+  })
 
 export const validateAuthor = body('author')
   .trim()
-  .isLength({ min: MIN_COUNT_TITLE, max: MAX_COUNT_TITLE })
+  .isLength({ min: constants.VIDEOS.MIN_COUNT_TITLE, max: constants.VIDEOS.MAX_COUNT_TITLE })
   .withMessage({
     message: 'error validation',
     field: 'author'

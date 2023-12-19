@@ -7,13 +7,13 @@ import { basicAuthMiddleware } from '../middleware/authGuard'
 
 export const blogsRouter = Router({})
 
-blogsRouter.get('/', basicAuthMiddleware, (_: Request, res: Response) => {
+blogsRouter.get('/', (_: Request, res: Response) => {
   const blogs = blogsService.getAllBlogs()
   res.status(STATUS_CODES.OK)
   res.send(blogs)
 })
 
-blogsRouter.get('/:id', basicAuthMiddleware, (req: Request, res: Response) => {
+blogsRouter.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params
 
   const blog = blogsService.getBlogsById(id.toString())
@@ -29,11 +29,11 @@ blogsRouter.get('/:id', basicAuthMiddleware, (req: Request, res: Response) => {
 
 blogsRouter.post(
   '/',
+  basicAuthMiddleware,
   validateName,
   validateDescription,
   validateWebsiteUrl,
   checkValidateFieldsMiddleware,
-  basicAuthMiddleware,
   (req: Request, res: Response) => {
     const { name, description, websiteUrl } = req.body || {}
 
@@ -46,11 +46,11 @@ blogsRouter.post(
 
 blogsRouter.put(
   '/:id',
+  basicAuthMiddleware,
   validateName,
   validateDescription,
   validateWebsiteUrl,
   checkValidateFieldsMiddleware,
-  basicAuthMiddleware,
   (req: Request, res: Response) => {
     const { id: blogId } = req.params
     const { name, description, websiteUrl } = req.body || {}

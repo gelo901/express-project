@@ -21,7 +21,7 @@ describe('/videos', () => {
   })
   afterEach(async () => {
     jest.clearAllMocks()
-    await request(app).delete('/testing/all-data')
+    await request(app).delete('/testing/all-data/videos')
   })
 
   describe('GET', () => {
