@@ -1,6 +1,6 @@
 import { type Request, type Response, Router } from 'express'
 import { STATUS_CODES } from '../constants/status-codes'
-import { blogsService } from '../services/blogsService'
+import { blogsRepository } from '../repositories/blogsRepository'
 import { validateDescription, validateName, validateWebsiteUrl } from '../middleware/validateBlogsFields'
 import { checkValidateFieldsMiddleware } from '../middleware/check-validate-fields-middleware/checkValidateFieldsMiddleware'
 import { basicAuthMiddleware } from '../middleware/authGuard'
@@ -8,7 +8,7 @@ import { basicAuthMiddleware } from '../middleware/authGuard'
 export const blogsRouter = Router({})
 
 blogsRouter.get('/', (_: Request, res: Response) => {
-  const blogs = blogsService.getAllBlogs()
+  const blogs = blogsRepository.getAllBlogs()
   res.status(STATUS_CODES.OK)
   res.send(blogs)
 })
@@ -16,7 +16,7 @@ blogsRouter.get('/', (_: Request, res: Response) => {
 blogsRouter.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params
 
-  const blog = blogsService.getBlogsById(id.toString())
+  const blog = blogsRepository.getBlogsById(id.toString())
 
   if (!blog) {
     res.status(STATUS_CODES.NOT_FOUND)
@@ -37,7 +37,7 @@ blogsRouter.post(
   (req: Request, res: Response) => {
     const { name, description, websiteUrl } = req.body || {}
 
-    const createdBlogs = blogsService.createBlog({ name, description, websiteUrl })
+    const createdBlogs = blogsRepository.createBlog({ name, description, websiteUrl })
 
     res.status(STATUS_CODES.CREATED)
     res.send(createdBlogs)
@@ -55,7 +55,7 @@ blogsRouter.put(
     const { id: blogId } = req.params
     const { name, description, websiteUrl } = req.body || {}
 
-    const updatedBlog = blogsService.updateVideoById({ blogId, params: { name, description, websiteUrl } })
+    const updatedBlog = blogsRepository.updateVideoById({ blogId, params: { name, description, websiteUrl } })
 
     if (!updatedBlog) {
       res.status(STATUS_CODES.NOT_FOUND)
@@ -70,7 +70,7 @@ blogsRouter.put(
 blogsRouter.delete('/:id', basicAuthMiddleware, (req: Request, res: Response) => {
   const { id: blogId } = req.params
 
-  const result = blogsService.deletedBlogById(blogId)
+  const result = blogsRepository.deletedBlogById(blogId)
 
   if (!result) {
     res.status(STATUS_CODES.NOT_FOUND)

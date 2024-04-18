@@ -1,5 +1,5 @@
 import { type Response, type Request, Router } from 'express'
-import { videosService } from '../services'
+import { videosRepository } from '../repositories'
 import {
   validateAuthor,
   validateAvailableResolutions,
@@ -14,7 +14,7 @@ import { checkValidateFieldsMiddleware } from '../middleware/check-validate-fiel
 export const videosRouter = Router({})
 
 videosRouter.get('/', (_: Request, res: Response) => {
-  const videos = videosService.getAllVideos()
+  const videos = videosRepository.getAllVideos()
   res.status(STATUS_CODES.OK)
   res.send(videos)
 })
@@ -22,7 +22,7 @@ videosRouter.get('/', (_: Request, res: Response) => {
 videosRouter.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params
 
-  const video = videosService.getVideosById({ videoId: Number(id) })
+  const video = videosRepository.getVideosById({ videoId: Number(id) })
 
   if (!video) {
     res.status(STATUS_CODES.NOT_FOUND)
@@ -45,7 +45,7 @@ videosRouter.post(
   (req: Request, res: Response) => {
     const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction } = req.body || {}
 
-    const createdVideo = videosService.postVideos({
+    const createdVideo = videosRepository.postVideos({
       title,
       author,
       availableResolutions,
@@ -72,7 +72,7 @@ videosRouter.put(
 
     const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body
 
-    const updatedVideo = videosService.updateVideoById({
+    const updatedVideo = videosRepository.updateVideoById({
       videoId,
       params: {
         title,
@@ -97,7 +97,7 @@ videosRouter.put(
 videosRouter.delete('/:id', (req: Request, res: Response) => {
   const { id: videoId } = req.params
 
-  const result = videosService.deletedVideosById({ videoId })
+  const result = videosRepository.deletedVideosById({ videoId })
 
   if (!result) {
     res.status(STATUS_CODES.NOT_FOUND)

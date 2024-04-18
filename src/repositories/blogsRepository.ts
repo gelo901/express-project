@@ -1,6 +1,6 @@
 import { Blog, BlogsModel } from '../data/models'
 
-export const blogsService = {
+export const blogsRepository = {
   getAllBlogs: () => {
     return BlogsModel.list
   },

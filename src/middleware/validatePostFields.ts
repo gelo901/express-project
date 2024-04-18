@@ -1,6 +1,6 @@
 import { body } from 'express-validator'
 import constants from './constants'
-import { blogsService } from '../services'
+import { blogsRepository } from '../repositories'
 
 export const validateTitle = body('title')
   .trim()
@@ -31,7 +31,7 @@ export const validateBlogId = body('blogId')
   .trim()
   .notEmpty()
   .custom((blogId: string) => {
-    const blog = blogsService.getBlogsById(blogId)
+    const blog = blogsRepository.getBlogsById(blogId)
     if (!blog) {
       throw new Error('error validation')
     }

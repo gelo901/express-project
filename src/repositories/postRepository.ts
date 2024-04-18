@@ -1,6 +1,6 @@
 import { Post, PostModel } from '../data/models'
 
-export const postService = {
+export const postRepository = {
   getAllPosts: () => {
     return PostModel.list
   },

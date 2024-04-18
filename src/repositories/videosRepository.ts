@@ -19,7 +19,7 @@ interface UpdateVideoByIdParams {
   params: PostVideoParams
 }
 
-export const videosService = {
+export const videosRepository = {
   getAllVideos: () => {
     return VideosModel.list
   },

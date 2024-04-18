@@ -1,5 +1,11 @@
 import { app, port } from './settings'
+import { rubDb } from './repositories/db'
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const startApp = async () => {
+  await rubDb()
+  app.listen(port, () => {
+    console.log(`App is running on Port ${port}`)
+  })
+}
+
+startApp()
