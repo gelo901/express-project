@@ -1,10 +1,9 @@
 import request from 'supertest'
 import dotenv from 'dotenv'
 import { app } from '../settings'
-import { Video } from '../data/models'
 dotenv.config()
 
-const MOCKED_VIDEO: Video = {
+const MOCKED_VIDEO = {
   id: 1,
   title: 'back-end',
   author: 'me',

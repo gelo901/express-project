@@ -1,10 +1,9 @@
 import request from 'supertest'
 import dotenv from 'dotenv'
 import { app } from '../settings'
-import { Blog } from '../data/models'
 dotenv.config()
 
-const MOCKED_BLOG: Blog = {
+const MOCKED_BLOG = {
   id: '1',
   name: 'test blog',
   description: 'awdadawdawdawd',

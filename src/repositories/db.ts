@@ -12,3 +12,9 @@ export async function rubDb() {
     await client.close()
   }
 }
+
+const db = client.db('shop')
+
+export const videosCollection = db.collection('videos')
+export const postsCollection = db.collection('repository')
+export const blogsCollection = db.collection('blogs')

@@ -1,5 +1,5 @@
 import { type Response, type Request, Router } from 'express'
-import { videosRepository } from '../repositories'
+import { videosDbRepository } from '../repositories'
 import {
   validateAuthor,
   validateAvailableResolutions,
@@ -13,16 +13,16 @@ import { checkValidateFieldsMiddleware } from '../middleware/check-validate-fiel
 
 export const videosRouter = Router({})
 
-videosRouter.get('/', (_: Request, res: Response) => {
-  const videos = videosRepository.getAllVideos()
+videosRouter.get('/', async (_: Request, res: Response) => {
+  const videos = await videosDbRepository.getAllVideos()
   res.status(STATUS_CODES.OK)
   res.send(videos)
 })
 
-videosRouter.get('/:id', (req: Request, res: Response) => {
+videosRouter.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params
 
-  const video = videosRepository.getVideosById({ videoId: Number(id) })
+  const video = await videosDbRepository.getVideosById({ videoId: Number(id) })
 
   if (!video) {
     res.status(STATUS_CODES.NOT_FOUND)
@@ -42,10 +42,10 @@ videosRouter.post(
   validateMinAgeRestriction,
   validatePublicationDate,
   checkValidateFieldsMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction } = req.body || {}
 
-    const createdVideo = videosRepository.postVideos({
+    const createdVideo = await videosDbRepository.postVideos({
       title,
       author,
       availableResolutions,
@@ -67,22 +67,23 @@ videosRouter.put(
   validateMinAgeRestriction,
   validatePublicationDate,
   checkValidateFieldsMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { id: videoId } = req.params
 
     const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body
-
-    const updatedVideo = videosRepository.updateVideoById({
-      videoId,
-      params: {
-        title,
-        author,
-        availableResolutions,
-        canBeDownloaded,
-        minAgeRestriction,
-        publicationDate
-      }
-    })
+    const [updatedVideo] = await Promise.all([
+      videosDbRepository.updateVideoById({
+        videoId,
+        params: {
+          title,
+          author,
+          availableResolutions,
+          canBeDownloaded,
+          minAgeRestriction,
+          publicationDate
+        }
+      })
+    ])
 
     if (!updatedVideo) {
       res.status(STATUS_CODES.NOT_FOUND)
@@ -94,10 +95,10 @@ videosRouter.put(
   }
 )
 
-videosRouter.delete('/:id', (req: Request, res: Response) => {
+videosRouter.delete('/:id', async (req: Request, res: Response) => {
   const { id: videoId } = req.params
 
-  const result = videosRepository.deletedVideosById({ videoId })
+  const result = await videosDbRepository.deletedVideosById({ videoId })
 
   if (!result) {
     res.status(STATUS_CODES.NOT_FOUND)

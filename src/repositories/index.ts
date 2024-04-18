@@ -1,3 +1,3 @@
-export * from '././videosRepository'
-export * from './blogsRepository'
-export * from './postRepository'
+export * from './videos-db-repository'
+export * from './blogs-db-repository'
+export * from './post-db-repository'

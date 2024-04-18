@@ -1,10 +1,9 @@
 import request from 'supertest'
 import dotenv from 'dotenv'
 import { app } from '../settings'
-import { Post } from '../data/models'
 dotenv.config()
 
-const MOCKED_POST: Post = {
+const MOCKED_POST = {
   id: '1',
   title: 'new blog',
   shortDescription: 'awdawdawdawdawdw',
